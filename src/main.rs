@@ -1,9 +1,12 @@
-use crate::{deck::Deck, deck_data::DeckData};
+use crate::{dawg::Dawg, deck::Deck, deck_data::DeckData};
 use std::rc::Rc;
 
+mod bit_set;
 mod card_data;
+mod dawg;
 mod deck;
 mod deck_data;
+mod letters;
 
 fn main() {
     let deck_data = Rc::new(DeckData::new());
@@ -17,4 +20,6 @@ fn main() {
     }
     println!("Deck size = {}", deck.len());
     println!("Hello, world!");
+
+    let dawg = Dawg::read("words.txt", 3, 10).unwrap();
 }
