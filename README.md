@@ -1,0 +1,1 @@
+Attempting to create a computer engine to play [Quiddler](https://en.wikipedia.org/wiki/Quiddler)
