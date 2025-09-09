@@ -87,7 +87,7 @@ impl DawgNode {
     }
 
     pub fn child(&self, letter_index: LetterIndex) -> usize {
-        self.children_indices[letter_index as usize]
+        self.children_indices[letter_index]
     }
 
     pub fn has_child(&self, letter_index: LetterIndex) -> bool {
