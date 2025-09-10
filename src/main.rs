@@ -1,5 +1,6 @@
 use crate::{
     card_data::CardIndex, dawg::Dawg, deck::Deck, deck_data::DeckData, letters::get_letter_index,
+    word::Word,
 };
 use std::{collections::HashSet, rc::Rc};
 
@@ -9,6 +10,7 @@ mod dawg;
 mod deck;
 mod deck_data;
 mod letters;
+mod word;
 
 fn main() {
     let deck_data = Rc::new(DeckData::new());
@@ -24,8 +26,8 @@ fn main() {
 }
 
 fn find_longest_word(dawg: &Dawg, cards: &Vec<CardIndex>, deck_data: &Rc<DeckData>) {
-    let mut longest_word = String::from("");
-    find_words_impl(dawg, 0, cards, deck_data, &String::from(""), &mut |word| {
+    let mut longest_word = Word::new();
+    find_words_impl(dawg, 0, cards, deck_data, &Word::new(), &mut |word| {
         if word.len() > longest_word.len() {
             longest_word = word.clone();
         }
@@ -38,8 +40,8 @@ fn find_words_impl(
     node_index: usize,
     cards: &Vec<CardIndex>,
     deck_data: &Rc<DeckData>,
-    prefix: &String,
-    on_find_word: &mut impl FnMut(&String),
+    prefix: &Word,
+    on_find_word: &mut impl FnMut(&Word),
 ) {
     let node = dawg.node(node_index);
 
@@ -63,11 +65,11 @@ fn find_words_impl(
             if next_node.has_child(letter_index) {
                 next_node_index = next_node.child(letter_index);
                 next_node = dawg.node(next_node_index);
-                next_prefix.push(letter);
             } else {
                 recur = false;
             }
         }
+        next_prefix.push(card_id, card);
 
         if recur {
             let cards_subset = cards
